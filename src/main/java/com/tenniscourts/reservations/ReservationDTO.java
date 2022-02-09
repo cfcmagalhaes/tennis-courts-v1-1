@@ -1,5 +1,6 @@
 package com.tenniscourts.reservations;
 
+import com.tenniscourts.guests.GuestDTO;
 import com.tenniscourts.schedules.ScheduleDTO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,15 +12,15 @@ import lombok.Setter;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Getter
-@Setter
 @Builder
-@Data
-public class ReservationDTO {
-
+public class ReservationDTO
+{
     private Long id;
+
+    private GuestDTO guest;
 
     private ScheduleDTO schedule;
 

@@ -3,10 +3,15 @@ package com.tenniscourts.tenniscourts;
 import org.mapstruct.InheritInverseConfiguration;
 import org.mapstruct.Mapper;
 
-@Mapper(componentModel = "spring")
-public interface TennisCourtMapper {
-    TennisCourtDTO map(TennisCourt source);
+import java.util.List;
+
+@Mapper( componentModel = "spring" )
+public interface TennisCourtMapper
+{
+    TennisCourtDTO map( TennisCourt source );
+
+    List<TennisCourtDTO> map( List<TennisCourt> source );
 
     @InheritInverseConfiguration
-    TennisCourt map(TennisCourtDTO source);
+    TennisCourt map( TennisCourtDTO source );
 }

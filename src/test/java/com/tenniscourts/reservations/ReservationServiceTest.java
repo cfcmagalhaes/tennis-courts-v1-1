@@ -14,23 +14,27 @@ import org.springframework.test.context.ContextConfiguration;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-@FixMethodOrder(MethodSorters.NAME_ASCENDING)
+@FixMethodOrder( MethodSorters.NAME_ASCENDING )
 @SpringBootTest
-@RunWith(MockitoJUnitRunner.class)
-@ContextConfiguration(classes = ReservationService.class)
-public class ReservationServiceTest {
+@RunWith( MockitoJUnitRunner.class )
+@ContextConfiguration( classes = ReservationService.class )
+public class ReservationServiceTest
+{
 
     @InjectMocks
     ReservationService reservationService;
 
     @Test
-    public void getRefundValueFullRefund() {
-        Schedule schedule = new Schedule();
+    public void getRefundValueFullRefund( )
+    {
+	Schedule schedule = new Schedule( );
 
-        LocalDateTime startDateTime = LocalDateTime.now().plusDays(2);
+	LocalDateTime startDateTime = LocalDateTime.now( ).plusDays( 2 );
 
-        schedule.setStartDateTime(startDateTime);
+	schedule.setStartDateTime( startDateTime );
 
-        Assert.assertEquals(reservationService.getRefundValue(Reservation.builder().schedule(schedule).value(new BigDecimal(10L)).build()), new BigDecimal(10));
+	Assert.assertEquals( reservationService.getRefundValue(
+					Reservation.builder( ).schedule( schedule ).value( new BigDecimal( 10L ) ).build( ) ),
+			new BigDecimal( 10 ) );
     }
 }

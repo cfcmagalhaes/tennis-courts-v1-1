@@ -1,27 +1,44 @@
 package com.tenniscourts.reservations;
 
 import com.tenniscourts.config.BaseRestController;
+import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 @AllArgsConstructor
-public class ReservationController extends BaseRestController {
-
+@RestController
+@RequestMapping( "/reservations" )
+public class ReservationController extends BaseRestController
+{
     private final ReservationService reservationService;
 
-    public ResponseEntity<Void> bookReservation(CreateReservationRequestDTO createReservationRequestDTO) {
-        return ResponseEntity.created(locationByEntity(reservationService.bookReservation(createReservationRequestDTO).getId())).build();
+    @PostMapping
+    @ApiOperation( value = "Book a reservation." )
+    public ResponseEntity<Void> bookReservation( @RequestBody CreateReservationRequestDTO createReservationRequestDTO )
+    {
+	return ResponseEntity.created( locationByEntity( reservationService.bookReservation( createReservationRequestDTO )
+                                        .getId( ) ) ).build( );
     }
 
-    public ResponseEntity<ReservationDTO> findReservation(Long reservationId) {
-        return ResponseEntity.ok(reservationService.findReservation(reservationId));
+    @GetMapping( "/{reservationId}")
+    @ApiOperation( value = "Find a reservation." )
+    public ResponseEntity<ReservationDTO> findReservation( @PathVariable Long reservationId )
+    {
+	return ResponseEntity.ok( reservationService.findReservation( reservationId ) );
     }
 
-    public ResponseEntity<ReservationDTO> cancelReservation(Long reservationId) {
-        return ResponseEntity.ok(reservationService.cancelReservation(reservationId));
+    @DeleteMapping( "/{reservationId}" )
+    @ApiOperation( value = "Cancel a reservation." )
+    public ResponseEntity<ReservationDTO> cancelReservation( @PathVariable Long reservationId )
+    {
+	return ResponseEntity.ok( reservationService.cancelReservation( reservationId ) );
     }
 
-    public ResponseEntity<ReservationDTO> rescheduleReservation(Long reservationId, Long scheduleId) {
-        return ResponseEntity.ok(reservationService.rescheduleReservation(reservationId, scheduleId));
+    @PutMapping( "/{reservationId}/{scheduleId}" )
+    @ApiOperation( value = "Reschedule a reservation." )
+    public ResponseEntity<ReservationDTO> rescheduleReservation( @PathVariable Long reservationId, @PathVariable Long scheduleId )
+    {
+        return ResponseEntity.ok( reservationService.rescheduleReservation( reservationId, scheduleId ) );
     }
 }

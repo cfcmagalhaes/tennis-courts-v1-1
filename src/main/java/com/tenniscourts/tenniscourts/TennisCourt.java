@@ -2,28 +2,20 @@ package com.tenniscourts.tenniscourts;
 
 import com.tenniscourts.config.persistence.BaseEntity;
 import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
+@Data
 @Entity
 @Table
-@Getter
-@Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(callSuper = true)
-@ToString
-public class TennisCourt extends BaseEntity<Long> {
-
-    @Column
+public class TennisCourt extends BaseEntity<Long>
+{
     @NotNull
     private String name;
 }

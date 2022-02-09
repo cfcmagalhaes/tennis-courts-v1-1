@@ -5,9 +5,12 @@ import com.tenniscourts.schedules.ScheduleService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @AllArgsConstructor
-public class TennisCourtService {
+public class TennisCourtService
+{
 
     private final TennisCourtRepository tennisCourtRepository;
 
@@ -15,19 +18,42 @@ public class TennisCourtService {
 
     private final TennisCourtMapper tennisCourtMapper;
 
-    public TennisCourtDTO addTennisCourt(TennisCourtDTO tennisCourt) {
-        return tennisCourtMapper.map(tennisCourtRepository.saveAndFlush(tennisCourtMapper.map(tennisCourt)));
+    public List<TennisCourtDTO> listAll( )
+    {
+	return tennisCourtMapper.map( tennisCourtRepository.findAll( ) );
     }
 
-    public TennisCourtDTO findTennisCourtById(Long id) {
-        return tennisCourtRepository.findById(id).map(tennisCourtMapper::map).orElseThrow(() -> {
-            throw new EntityNotFoundException("Tennis Court not found.");
-        });
+    public TennisCourtDTO listById( Long id )
+    {
+	return tennisCourtRepository.findById( id ).map( tennisCourtMapper::map ).orElseThrow( ( ) -> {
+	    throw new EntityNotFoundException( "Tennis Court not found." );
+	} );
     }
 
-    public TennisCourtDTO findTennisCourtWithSchedulesById(Long tennisCourtId) {
-        TennisCourtDTO tennisCourtDTO = findTennisCourtById(tennisCourtId);
-        tennisCourtDTO.setTennisCourtSchedules(scheduleService.findSchedulesByTennisCourtId(tennisCourtId));
-        return tennisCourtDTO;
+    public TennisCourtDTO add( TennisCourtDTO tennisCourt )
+    {
+	return tennisCourtMapper.map( tennisCourtRepository.saveAndFlush( tennisCourtMapper.map( tennisCourt ) ) );
+    }
+
+    public TennisCourtDTO update( TennisCourtDTO tennisCourtDTO )
+    {
+	listById( tennisCourtDTO.getId( ) );
+	TennisCourt tennisCourt = tennisCourtRepository.save( tennisCourtMapper.map( tennisCourtDTO ) );
+
+	return tennisCourtMapper.map( tennisCourt );
+    }
+
+    public void delete( Long tennisCourtId )
+    {
+	listById( tennisCourtId );
+	tennisCourtRepository.deleteById( tennisCourtId );
+    }
+
+    public TennisCourtDTO findByIdWithSchedules( Long tennisCourtId )
+    {
+	TennisCourtDTO tennisCourtDTO = listById( tennisCourtId );
+	tennisCourtDTO.setTennisCourtSchedules( scheduleService.listByTennisCourtId( tennisCourtId ) );
+
+	return tennisCourtDTO;
     }
 }
